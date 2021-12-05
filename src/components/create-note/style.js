@@ -28,12 +28,17 @@ export const useStyles = makeStyles((theme) => ({
     maxWidth: "50%",
     minWidth: "400px",
     flex: 1,
-    padding: "2px 4px",
+    padding: theme.spacing(1, 1),
     display: "flex",
     flexDirection: "column",
     width: 400,
     borderRadius: 8,
-    border: (_) => (_.err ? "2px solid red" : "none"),
+    border: (_) =>
+      _.err
+        ? _.type == "success"
+          ? "2px solid green"
+          : "2px solid red"
+        : "none",
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -43,5 +48,8 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     padding: "0 10px",
+  },
+  icon: {
+    marginRight: "12px",
   },
 }));

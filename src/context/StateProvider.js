@@ -15,6 +15,11 @@ const StateProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setfilteredNotes] = useState([]);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    type: "success",
+  });
 
   useEffect(() => {
     getNotes();
@@ -67,6 +72,21 @@ const StateProvider = ({ children }) => {
       await getNotes();
     }
   };
+
+  const showAlert = ({ open, message, type = "success" }) => {
+    setAlert({
+      open,
+      message,
+      type,
+    });
+    setTimeout(() => {
+      setAlert({
+        open: false,
+        message: "",
+        type: "success",
+      });
+    }, 2000);
+  };
   const value = {
     currentUser,
     notes,
@@ -78,6 +98,8 @@ const StateProvider = ({ children }) => {
     setfilteredNotes,
     searchNotes,
     handleSignIn,
+    showAlert,
+    alert,
   };
 
   return (

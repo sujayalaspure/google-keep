@@ -5,9 +5,9 @@ import { useStyles } from "./style";
 import MainContent from "./components/main-content";
 import Sidebar from "./components/sidebar";
 import Auth from "./components/auth";
-import Alert from "@material-ui/lab/Alert";
-import Slide from "@material-ui/core/Slide";
+
 import { useStateValue } from "./context/StateProvider";
+import CustomAlert from "./components/atoms/alert";
 const App = () => {
   const classes = useStyles();
 
@@ -21,23 +21,10 @@ const App = () => {
   return (
     <>
       <CssBaseline />
-      <Slide direction="right" in={alert.open} mountOnEnter unmountOnExit>
-        <Alert
-          variant="outlined"
-          onClose={() =>
-            setalert({
-              open: false,
-              message: "",
-            })
-          }
-          className={classes.alert}
-          severity="error"
-        >
-          {alert.message || "Something went right"}
-        </Alert>
-      </Slide>
 
-      {currentUser ? (
+      <CustomAlert />
+
+      {true ? (
         <>
           <CustomAppBar {...{ currentUser }} />
 

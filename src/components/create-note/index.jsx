@@ -1,4 +1,12 @@
-import { Button, Fade, IconButton, InputBase, Paper } from "@material-ui/core";
+import {
+  Button,
+  Collapse,
+  Fade,
+  IconButton,
+  InputBase,
+  Paper,
+  Slide,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import { useStyles } from "./style";
 import { Timestamp } from "../../firebase/firebase";
@@ -11,9 +19,15 @@ import {
   ColorLensOutlined,
   MoreVertOutlined,
 } from "@material-ui/icons";
+import { useStateValue } from "../../context/StateProvider";
 
-const CreateNote = ({ alert, createNote, setalert }) => {
-  const classes = useStyles({ err: alert.open });
+const CreateNote = ({ createNote }) => {
+  const { alert, showAlert } = useStateValue();
+
+  const classes = useStyles({ err: alert.open, type: alert.type });
+
+  const [expand, setExpand] = useState(false);
+
   const [openColor, setOpenColor] = useState(false);
   const [input, setInput] = useState({
     title: "",
@@ -42,17 +56,11 @@ const CreateNote = ({ alert, createNote, setalert }) => {
 
   const handleSubmit = () => {
     if (input.title.trim() === "" || input.description.trim() === "") {
-      // alert("Please fill all the fields");
-      setalert({
+      showAlert({
         open: true,
         message: "Please fill all the fields",
+        type: "error",
       });
-      setTimeout(() => {
-        setalert({
-          open: false,
-          message: "",
-        });
-      }, 2000);
     } else {
       const createdAt = Timestamp.now();
 
@@ -108,37 +116,38 @@ const CreateNote = ({ alert, createNote, setalert }) => {
           placeholder="Title..."
           onChange={handleChange}
           name="title"
-          required
+          onFocus={() => setExpand(true)}
         />
-        <InputBase
-          value={input.description}
-          multiline
-          minRows={3}
-          className={classes.input}
-          placeholder="Take a Note..."
-          onChange={handleChange}
-          name="description"
-        />
+        <Collapse in={expand}>
+          <InputBase
+            value={input.description}
+            multiline
+            minRows={3}
+            className={classes.input}
+            placeholder="Take a Note..."
+            onChange={handleChange}
+            name="description"
+          />
+          <div className={classes.bottomBtns}>
+            <div>
+              {actionIcons.map(({ Icon, onClick }, index) => (
+                <IconButton
+                  key={index}
+                  size="small"
+                  aria-label="menu"
+                  onClick={onClick}
+                  className={classes.icon}
+                >
+                  <Icon fontSize="small" />
+                </IconButton>
+              ))}
+            </div>
 
-        <div className={classes.bottomBtns}>
-          <div>
-            {actionIcons.map(({ Icon, onClick }, index) => (
-              <IconButton
-                key={index}
-                style={{ margin: "0 8px" }}
-                size="small"
-                aria-label="menu"
-                onClick={onClick}
-              >
-                <Icon fontSize="small" />
-              </IconButton>
-            ))}
+            <Button onClick={handleSubmit} size="small">
+              Save
+            </Button>
           </div>
-
-          <Button onClick={handleSubmit} size="small">
-            Save
-          </Button>
-        </div>
+        </Collapse>
       </Paper>
     </div>
   );
