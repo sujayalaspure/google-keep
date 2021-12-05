@@ -1,9 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
-import { getDocs, addDoc, deleteDoc, doc } from "firebase/firestore/lite";
+import {
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+  collection,
+  setDoc,
+} from "firebase/firestore/lite";
 import { toDate } from "../helperFunctions";
-import { notesRef, db, auth, provider } from "../firebase/firebase";
+import { db, auth, provider } from "../firebase/firebase";
 import { signInWithPopup } from "@firebase/auth";
-import { CircularProgress } from "@material-ui/core";
 // @ts-ignore
 const StateContext = React.createContext();
 
@@ -16,6 +22,7 @@ const StateProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setfilteredNotes] = useState([]);
+  const [path, setPath] = useState("notes/notes/dummy");
   const [alert, setAlert] = useState({
     open: false,
     message: "",
@@ -23,18 +30,31 @@ const StateProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    getNotes();
-  }, []);
+    if (currentUser) {
+      getNotes();
+    }
+  }, [currentUser]);
 
-  const handleSignIn = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const user = result.user;
-        setCurrentUser(user);
-      })
-      .catch((error) => {
-        console.log("[auth/index.js:21] ---> error", error);
+  const handleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      setCurrentUser(user);
+      console.log("[context/StateProvider.js:43] ---> user", user);
+      setPath(`notes/notes/${user.uid}`);
+      await setDoc(doc(db, `notes/notes/${user.uid}`, "userProfile"), {
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        phoneNumber: user.phoneNumber,
       });
+    } catch (error) {
+      showAlert({
+        open: true,
+        message: error.message,
+        type: "error",
+      });
+    }
   };
 
   const searchNotes = (text) => {
@@ -47,6 +67,7 @@ const StateProvider = ({ children }) => {
 
   const getNotes = async () => {
     setLoading(true);
+    const notesRef = collection(db, path);
     const notesSnapshot = await getDocs(notesRef);
     const notesData = notesSnapshot.docs.map((doc) => ({
       ...doc.data(),
@@ -61,6 +82,7 @@ const StateProvider = ({ children }) => {
 
   const addNote = async (note) => {
     if (note) {
+      const notesRef = collection(db, path);
       await addDoc(notesRef, note);
       getNotes();
     }
@@ -69,7 +91,7 @@ const StateProvider = ({ children }) => {
   const deleteNotebyId = async (id) => {
     console.log("[context/StateProvider.js:59] ---> id", id);
     if (id) {
-      await deleteDoc(doc(db, "notes", id));
+      await deleteDoc(doc(db, path, id));
       await getNotes();
     }
   };
