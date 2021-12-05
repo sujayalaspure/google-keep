@@ -7,9 +7,7 @@ const SidebarItem = ({ isActive, text, icon: Icon, onClick }) => {
   return (
     <div className={classes.sideBarItem} onClick={onClick}>
       <Icon fontSize="medium" className={classes.icon} />
-      <Typography className={classes.text} color="textSecondary">
-        {text}
-      </Typography>
+      <Typography className={classes.text}>{text}</Typography>
     </div>
   );
 };

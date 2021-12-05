@@ -19,8 +19,10 @@ import {
   RefreshOutlined as RefreshOutlinedIcon,
   Search as SearchIcon,
 } from "@material-ui/icons";
-const CustomAppBar = ({ currentUser, searchNotes }) => {
+import { useStateValue } from "../../context/StateProvider";
+const CustomAppBar = ({ currentUser }) => {
   const classes = useStyles();
+  const { searchNotes } = useStateValue();
 
   const [isDarkMode, setisDarkMode] = useState(false);
   const HtmlTooltip = withStyles((theme) => ({

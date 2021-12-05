@@ -3,34 +3,21 @@ import React from "react";
 import CustomCard from "../atoms/custom-card";
 import CreateNote from "../create-note";
 import { useStyles } from "./style";
-import { db, getNotes, addNote, deleteNote } from "../../firebase";
+import { db } from "../../firebase/firebase";
+import { useStateValue } from "../../context/StateProvider";
 
-const MainContent = ({
-  alert,
-  setfilteredNotes,
-  setalert,
-  notes,
-  setNotes,
-}) => {
+const MainContent = ({ alert, setalert, notes }) => {
   const classes = useStyles();
+
+  const { addNote, filteredNotes } = useStateValue();
 
   const createNote = async (note) => {
     await addNote(note);
-    getNotes().then((notes) => {
-      setNotes(notes);
-
-      setfilteredNotes(notes);
-    });
   };
 
-  const deleteNotebyId = async (id) => {
-    await deleteNote(id);
-    getNotes().then((notes) => {
-      setNotes(notes);
-
-      setfilteredNotes(notes);
-    });
-  };
+  // const deleteNotebyId = async (id) => {
+  //   await deleteNote(id);
+  // };
 
   return (
     <Container className={classes.container}>
@@ -42,10 +29,9 @@ const MainContent = ({
         {/* <Grid item xs={12} sm={6} lg={3}>
           <CustomCard deleteNotebyId={null} />
         </Grid> */}
-        {notes.map((note) => (
+        {filteredNotes.map((note) => (
           <Grid key={note.id} item xs={12} sm={6} md={4} lg={3}>
             <CustomCard
-              deleteNotebyId={deleteNotebyId}
               id={note.id}
               title={note.title}
               description={note.description}

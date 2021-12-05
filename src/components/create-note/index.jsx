@@ -1,7 +1,7 @@
 import { Button, Fade, IconButton, InputBase, Paper } from "@material-ui/core";
 import React, { useState } from "react";
 import { useStyles } from "./style";
-import { Timestamp } from "../../firebase";
+import { Timestamp } from "../../firebase/firebase";
 
 import {
   AddAlertOutlined,

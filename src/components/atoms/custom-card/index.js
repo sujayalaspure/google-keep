@@ -6,20 +6,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
+import { useStateValue } from "../../../context/StateProvider";
 import { useStyles } from "./style";
 
-const CustomCard = ({
-  title,
-  description,
-  createdAt,
-  id,
-  color,
-  deleteNotebyId,
-}) => {
+const CustomCard = ({ title, description, createdAt, id, color }) => {
   const classes = useStyles();
 
-  const handleDelete = () => {
-    deleteNotebyId(id);
+  const { deleteNotebyId } = useStateValue();
+
+  const handleDelete = async () => {
+    await deleteNotebyId(id);
   };
 
   return (

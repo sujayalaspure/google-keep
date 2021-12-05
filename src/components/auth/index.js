@@ -1,21 +1,23 @@
 import { Button, Card } from "@material-ui/core";
 import React from "react";
-import { provider } from "../../firebase";
+import { provider } from "../../firebase/firebase";
 import { getAuth, signInWithPopup } from "firebase/auth";
+import { useStateValue } from "../../context/StateProvider";
 
-const Auth = ({ setCurrentUser }) => {
-  const auth = getAuth();
+const Auth = () => {
+  const { handleSignIn } = useStateValue();
+  // const auth = getAuth();
 
-  const handleSignIn = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const user = result.user;
-        setCurrentUser(user);
-      })
-      .catch((error) => {
-        console.log("[auth/index.js:21] ---> error", error);
-      });
-  };
+  // const handleSignIn = () => {
+  //   signInWithPopup(auth, provider)
+  //     .then((result) => {
+  //       const user = result.user;
+  //       setCurrentUser(user);
+  //     })
+  //     .catch((error) => {
+  //       console.log("[auth/index.js:21] ---> error", error);
+  //     });
+  // };
 
   return (
     <div style={{ display: "grid", placeContent: "center", height: "100vh" }}>
