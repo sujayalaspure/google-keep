@@ -5,7 +5,6 @@ import {
   IconButton,
   InputBase,
   Paper,
-  Slide,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { useStyles } from "./style";
@@ -117,6 +116,7 @@ const CreateNote = ({ createNote }) => {
           onChange={handleChange}
           name="title"
           onFocus={() => setExpand(true)}
+          // onBlur={() => setExpand(false)}
         />
         <Collapse in={expand}>
           <InputBase

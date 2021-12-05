@@ -1,4 +1,4 @@
-import { Container, Divider, Grid } from "@material-ui/core";
+import { CircularProgress, Container, Divider, Grid } from "@material-ui/core";
 import React from "react";
 import CustomCard from "../atoms/custom-card";
 import CreateNote from "../create-note";
@@ -8,7 +8,7 @@ import { useStateValue } from "../../context/StateProvider";
 const MainContent = () => {
   const classes = useStyles();
 
-  const { addNote, filteredNotes, showAlert } = useStateValue();
+  const { addNote, filteredNotes, showAlert, loading } = useStateValue();
 
   const createNote = async (note) => {
     await addNote(note);
@@ -25,13 +25,26 @@ const MainContent = () => {
       <br />
       <Divider />
       <br />
-      <Grid container spacing={2}>
-        {filteredNotes.map((note) => (
-          <Grid key={note.id} item xs={12} sm={6} md={4} lg={3}>
-            <CustomCard {...note} />
-          </Grid>
-        ))}
-      </Grid>
+      {loading ? (
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+        </div>
+      ) : (
+        <Grid container spacing={2}>
+          {filteredNotes.map((note) => (
+            <Grid key={note.id} item xs={12} sm={6} md={4} lg={3}>
+              <CustomCard {...note} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Container>
   );
 };

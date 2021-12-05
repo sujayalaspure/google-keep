@@ -3,6 +3,7 @@ import { getDocs, addDoc, deleteDoc, doc } from "firebase/firestore/lite";
 import { toDate } from "../helperFunctions";
 import { notesRef, db, auth, provider } from "../firebase/firebase";
 import { signInWithPopup } from "@firebase/auth";
+import { CircularProgress } from "@material-ui/core";
 // @ts-ignore
 const StateContext = React.createContext();
 

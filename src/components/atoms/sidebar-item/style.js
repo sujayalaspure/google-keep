@@ -16,10 +16,10 @@ export const useStyles = makeStyles((theme) => ({
 
   icon: {
     marginRight: theme.spacing(2),
-    color: "#202124",
+    color: "#161616",
   },
   text: {
     fontWeight: 600,
-    color: "#202124",
+    color: "#161616",
   },
 }));
