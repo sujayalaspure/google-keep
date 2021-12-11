@@ -6,7 +6,7 @@ import {
   InputBase,
   Paper,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useStyles } from "./style";
 import { Timestamp } from "../../firebase/firebase";
 
@@ -19,8 +19,9 @@ import {
   MoreVertOutlined,
 } from "@material-ui/icons";
 import { useStateValue } from "../../context/StateProvider";
+import TagsInput from "../atoms/taginput";
 
-const CreateNote = ({ createNote }) => {
+const CreateNote = ({ createNote, inputProp }) => {
   const { alert, showAlert } = useStateValue();
 
   const classes = useStyles({ err: alert.open, type: alert.type });
@@ -32,6 +33,7 @@ const CreateNote = ({ createNote }) => {
     title: "",
     description: "",
     color: "#fff",
+    tags: [],
   });
 
   const actionIcons = [
@@ -46,6 +48,17 @@ const CreateNote = ({ createNote }) => {
     },
     { name: "more", Icon: MoreVertOutlined, onClick: null },
   ];
+
+  useEffect(() => {
+    if (inputProp) {
+      setInput({
+        id: inputProp.id,
+        title: inputProp.title,
+        description: inputProp.description,
+        color: inputProp.color,
+      });
+    }
+  }, []);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -62,12 +75,13 @@ const CreateNote = ({ createNote }) => {
       });
     } else {
       const createdAt = Timestamp.now();
-
       createNote({ ...input, createdAt });
 
       setInput({
         title: "",
         description: "",
+        color: "#fff",
+        tags: [],
       });
     }
   };
@@ -83,6 +97,11 @@ const CreateNote = ({ createNote }) => {
     "#e29578",
     "#ffffff",
   ];
+
+  const selectedTags = (tags) => {
+    console.log(tags);
+    setInput((prevValue) => ({ ...prevValue, tags }));
+  };
 
   return (
     <div className={classes.container}>
@@ -118,6 +137,7 @@ const CreateNote = ({ createNote }) => {
           onFocus={() => setExpand(true)}
           // onBlur={() => setExpand(false)}
         />
+
         <Collapse in={expand}>
           <InputBase
             value={input.description}
@@ -128,6 +148,7 @@ const CreateNote = ({ createNote }) => {
             onChange={handleChange}
             name="description"
           />
+          <TagsInput selectedTags={selectedTags} />
           <div className={classes.bottomBtns}>
             <div>
               {actionIcons.map(({ Icon, onClick }, index) => (

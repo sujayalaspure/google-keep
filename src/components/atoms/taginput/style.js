@@ -1,0 +1,56 @@
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles((theme) => ({
+  tagsInput: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+    width: "100%",
+    margin: "0 0 1rem 0",
+    padding: "0 8px",
+    border: "1px solid #ccc2",
+  },
+  tags: {
+    display: "flex",
+    alignItems: "center",
+    padding: "0",
+    margin: "8px 0 0 0",
+    flexWrap: "wrap",
+  },
+  tag: {
+    width: "auto",
+    height: "30px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#fff",
+    padding: "4px 8px",
+    fontSize: "14px",
+    listStyle: "none",
+    borderRadius: "6px",
+    margin: "0 8px 8px 0",
+    background: "#0052cc",
+  },
+  tagTitle: {
+    // marginTop: "3px",
+  },
+  tagCloseIcon: {
+    display: "block",
+    width: "16px",
+    height: "16px",
+    lineHeight: "16px",
+    textAlign: "center",
+    fontSize: "16px",
+    marginLeft: "8px",
+    color: "#0052cc",
+    borderRadius: "50%",
+    background: "#fff",
+    cursor: "pointer",
+  },
+  input: {
+    flex: 1,
+    border: "none",
+    // border: "1px solid #cccdde",
+    height: "46px",
+  },
+}));
+export default useStyles;

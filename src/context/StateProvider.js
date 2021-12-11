@@ -6,7 +6,11 @@ import {
   doc,
   collection,
   setDoc,
-} from "firebase/firestore/lite";
+  onSnapshot,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+
 import { toDate } from "../helperFunctions";
 import { db, auth, provider } from "../firebase/firebase";
 import { signInWithPopup } from "@firebase/auth";
@@ -29,11 +33,29 @@ const StateProvider = ({ children }) => {
     type: "success",
   });
 
+  const [editNote, setEditNote] = useState({
+    open: false,
+    data: {},
+  });
+
   useEffect(() => {
-    if (currentUser) {
-      getNotes();
-    }
-  }, [currentUser]);
+    // getNotes();
+    const notesRef = collection(db, path);
+    const unsub = onSnapshot(notesRef, (querySnapshot) => {
+      const notesData = [];
+      querySnapshot.forEach((doc) => {
+        notesData.push({
+          ...doc.data(),
+          id: doc.id,
+          createdAt: toDate(doc.data().createdAt),
+        });
+      });
+      setNotes(notesData);
+      setfilteredNotes(notesData);
+    });
+
+    return () => unsub();
+  }, [currentUser, path]);
 
   const handleSignIn = async () => {
     try {
@@ -84,7 +106,31 @@ const StateProvider = ({ children }) => {
     if (note) {
       const notesRef = collection(db, path);
       await addDoc(notesRef, note);
-      getNotes();
+    }
+  };
+
+  const updateDocbyId = async (data) => {
+    if (data) {
+      try {
+        await updateDoc(doc(db, path, data.id), data);
+        console.log("update success");
+        showAlert({
+          open: true,
+          message: "Update Success",
+          type: "success",
+        });
+        setEditNote({
+          open: false,
+          data: {},
+        });
+      } catch (error) {
+        console.log("[context/StateProvider.js:119] ---> error", error);
+        showAlert({
+          open: true,
+          message: error.message,
+          type: "error",
+        });
+      }
     }
   };
 
@@ -92,7 +138,6 @@ const StateProvider = ({ children }) => {
     console.log("[context/StateProvider.js:59] ---> id", id);
     if (id) {
       await deleteDoc(doc(db, path, id));
-      await getNotes();
     }
   };
 
@@ -123,6 +168,9 @@ const StateProvider = ({ children }) => {
     handleSignIn,
     showAlert,
     alert,
+    editNote,
+    setEditNote,
+    updateDocbyId,
   };
 
   return (

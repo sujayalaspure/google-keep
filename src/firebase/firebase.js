@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, Timestamp } from "firebase/firestore/lite";
+import { getFirestore, collection, Timestamp } from "firebase/firestore";
 
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 

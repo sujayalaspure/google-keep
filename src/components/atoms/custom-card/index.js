@@ -3,16 +3,17 @@ import {
   Card,
   CardActions,
   CardContent,
+  IconButton,
   Typography,
 } from "@material-ui/core";
 import React from "react";
 import { useStateValue } from "../../../context/StateProvider";
 import { useStyles } from "./style";
-
+import BorderColorOutlinedIcon from "@material-ui/icons/BorderColorOutlined";
 const CustomCard = ({ title, description, createdAt, id, color }) => {
   const classes = useStyles();
 
-  const { deleteNotebyId } = useStateValue();
+  const { deleteNotebyId, setEditNote } = useStateValue();
 
   const handleDelete = async () => {
     await deleteNotebyId(id);
@@ -32,7 +33,20 @@ const CustomCard = ({ title, description, createdAt, id, color }) => {
           {description || "This is a description"}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
+        <IconButton
+          size="small"
+          aria-label="menu"
+          onClick={() =>
+            setEditNote({
+              open: true,
+              data: { title, description, createdAt, id, color },
+            })
+          }
+          className={classes.icon}
+        >
+          <BorderColorOutlinedIcon fontSize="small" />
+        </IconButton>
         <Button onClick={handleDelete} size="small">
           Delete
         </Button>
