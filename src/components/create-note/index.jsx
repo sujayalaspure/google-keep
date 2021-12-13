@@ -29,7 +29,7 @@ const CreateNote = ({ createNote, inputProp }) => {
   const [expand, setExpand] = useState(false);
 
   const [openColor, setOpenColor] = useState(false);
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState(inputProp?.tags || []);
   const [input, setInput] = useState({
     title: "",
     description: "",

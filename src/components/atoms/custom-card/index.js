@@ -3,6 +3,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  Divider,
   IconButton,
   Typography,
 } from "@material-ui/core";
@@ -10,7 +11,7 @@ import React from "react";
 import { useStateValue } from "../../../context/StateProvider";
 import { useStyles } from "./style";
 import BorderColorOutlinedIcon from "@material-ui/icons/BorderColorOutlined";
-const CustomCard = ({ title, description, createdAt, id, color }) => {
+const CustomCard = ({ title, description, createdAt, id, color, tags }) => {
   const classes = useStyles();
 
   const { deleteNotebyId, setEditNote } = useStateValue();
@@ -32,6 +33,12 @@ const CustomCard = ({ title, description, createdAt, id, color }) => {
         <Typography variant="body2" component="p">
           {description || "This is a description"}
         </Typography>
+        {/* <Divider /> */}
+        <div className={classes.tagList}>
+          {tags?.map((tag) => (
+            <div className={classes.tag}>{tag}</div>
+          ))}
+        </div>
       </CardContent>
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
         <IconButton
@@ -40,7 +47,7 @@ const CustomCard = ({ title, description, createdAt, id, color }) => {
           onClick={() =>
             setEditNote({
               open: true,
-              data: { title, description, createdAt, id, color },
+              data: { title, description, createdAt, id, color, tags },
             })
           }
           className={classes.icon}

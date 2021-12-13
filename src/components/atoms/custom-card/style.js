@@ -12,7 +12,15 @@ export const useStyles = makeStyles((theme) => ({
   title: {
     fontSize: 14,
   },
-  pos: {
-    marginBottom: 12,
+
+  tagList: {
+    display: "flex",
+    marginTop: "10px",
+  },
+  tag: {
+    margin: "0 4px",
+    backgroundColor: "lightgrey",
+    padding: "2px 4px",
+    borderRadius: "4px",
   },
 }));

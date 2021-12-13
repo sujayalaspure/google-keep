@@ -12,7 +12,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   toolBar: {
     display: "grid",
-    gridTemplateColumns: "50px 150px auto max-content",
+    gridTemplateColumns: "50px 100px auto max-content",
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -32,7 +32,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 2),
     margin: theme.spacing(0, 4),
     backgroundColor: "rgba(0,0,0,.1)",
-    maxWidth: "60%",
+    maxWidth: "500px",
     alignSelf: "center",
   },
   inputInput: {

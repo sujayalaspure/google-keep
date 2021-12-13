@@ -113,6 +113,7 @@ const StateProvider = ({ children }) => {
       id: doc.id,
       createdAt: toDate(doc.data().createdAt),
     }));
+
     setNotes(notesData);
     setfilteredNotes(notesData);
     setLoading(false);

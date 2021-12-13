@@ -7,6 +7,7 @@ import {
   Tooltip,
   Typography,
   withStyles,
+  CircularProgress,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { useStyles } from "./style";
@@ -22,7 +23,7 @@ import {
 import { useStateValue } from "../../context/StateProvider";
 const CustomAppBar = ({ currentUser }) => {
   const classes = useStyles();
-  const { searchNotes } = useStateValue();
+  const { searchNotes, loading, getNotes } = useStateValue();
 
   const [isDarkMode, setisDarkMode] = useState(false);
   const HtmlTooltip = withStyles((theme) => ({
@@ -35,10 +36,10 @@ const CustomAppBar = ({ currentUser }) => {
     },
   }))(Tooltip);
   const icons = [
-    <RefreshOutlinedIcon />,
+    // <RefreshOutlinedIcon />,
 
     <SettingsOutlinedIcon />,
-    <ListIcon />,
+    // <CircularProgress size={24} />,
   ];
   return (
     <AppBar position="static" className={classes.AppBar}>
@@ -82,6 +83,25 @@ const CustomAppBar = ({ currentUser }) => {
               </Tooltip>
             )}
           </IconButton>
+
+          {loading ? (
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              aria-label="menu"
+            >
+              <CircularProgress size={24} />
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={getNotes}
+              edge="start"
+              className={classes.menuButton}
+              aria-label="menu"
+            >
+              <RefreshOutlinedIcon />
+            </IconButton>
+          )}
 
           {icons.map((icon, index) => (
             <IconButton
