@@ -1,10 +1,8 @@
 import { InputBase } from "@material-ui/core";
-import { useState } from "react";
 import useStyles from "./style";
 
-const TagsInput = ({ selectedTags, tagList = [] }) => {
+const TagsInput = ({ selectedTags, tags, setTags }) => {
   const classes = useStyles();
-  const [tags, setTags] = useState(tagList);
   const removeTags = (indexToRemove) => {
     setTags([...tags.filter((_, index) => index !== indexToRemove)]);
     selectedTags([...tags.filter((_, index) => index !== indexToRemove)]);

@@ -72,7 +72,15 @@ const CustomAppBar = ({ currentUser }) => {
             aria-label="menu"
             onClick={() => setisDarkMode(!isDarkMode)}
           >
-            {isDarkMode ? <ToggleDarkModeIcon /> : <ToggleLightModeIcon />}
+            {isDarkMode ? (
+              <Tooltip title="Toggle Light Mode">
+                <ToggleDarkModeIcon />
+              </Tooltip>
+            ) : (
+              <Tooltip title="Toggle Dark Mode">
+                <ToggleLightModeIcon />
+              </Tooltip>
+            )}
           </IconButton>
 
           {icons.map((icon, index) => (

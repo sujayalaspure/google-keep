@@ -29,6 +29,7 @@ const CreateNote = ({ createNote, inputProp }) => {
   const [expand, setExpand] = useState(false);
 
   const [openColor, setOpenColor] = useState(false);
+  const [tags, setTags] = useState([]);
   const [input, setInput] = useState({
     title: "",
     description: "",
@@ -83,6 +84,7 @@ const CreateNote = ({ createNote, inputProp }) => {
         color: "#fff",
         tags: [],
       });
+      setTags([]);
     }
   };
 
@@ -148,7 +150,7 @@ const CreateNote = ({ createNote, inputProp }) => {
             onChange={handleChange}
             name="description"
           />
-          <TagsInput selectedTags={selectedTags} />
+          <TagsInput selectedTags={selectedTags} {...{ tags, setTags }} />
           <div className={classes.bottomBtns}>
             <div>
               {actionIcons.map(({ Icon, onClick }, index) => (

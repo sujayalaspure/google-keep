@@ -14,6 +14,8 @@ import {
 import { toDate } from "../helperFunctions";
 import { db, auth, provider } from "../firebase/firebase";
 import { signInWithPopup } from "@firebase/auth";
+import LabelOutlinedIcon from "@material-ui/icons/LabelOutlined";
+import { sideBarInitials } from "./data";
 // @ts-ignore
 const StateContext = React.createContext();
 
@@ -27,6 +29,9 @@ const StateProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setfilteredNotes] = useState([]);
   const [path, setPath] = useState("notes/notes/dummy");
+  const [tagList, setTagList] = useState([]);
+  const [sidebarItems, setsidebarItems] = useState(sideBarInitials);
+  const [selectedSidebarItem, setSelectedSidebarItem] = useState({});
   const [alert, setAlert] = useState({
     open: false,
     message: "",
@@ -39,7 +44,7 @@ const StateProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    // getNotes();
+    setLoading(true);
     const notesRef = collection(db, path);
     const unsub = onSnapshot(notesRef, (querySnapshot) => {
       const notesData = [];
@@ -50,8 +55,20 @@ const StateProvider = ({ children }) => {
           createdAt: toDate(doc.data().createdAt),
         });
       });
+
+      const tags = [
+        ...new Set(notesData.reduce((rls, crt) => [...rls, ...crt.tags], [])),
+      ];
+      const tagList = tags.map((tag) => ({
+        id: Math.random().toString(16).slice(2),
+        text: tag,
+        isActive: false,
+        Icon: LabelOutlinedIcon,
+      }));
+      setsidebarItems([...sidebarItems, ...tagList]);
       setNotes(notesData);
       setfilteredNotes(notesData);
+      setLoading(false);
     });
 
     return () => unsub();
@@ -141,6 +158,10 @@ const StateProvider = ({ children }) => {
     }
   };
 
+  const selectSidebarItem = (item) => {
+    setSelectedSidebarItem(item);
+  };
+
   const showAlert = ({ open, message, type = "success" }) => {
     setAlert({
       open,
@@ -171,6 +192,10 @@ const StateProvider = ({ children }) => {
     editNote,
     setEditNote,
     updateDocbyId,
+    tagList,
+    sidebarItems,
+    selectedSidebarItem,
+    selectSidebarItem,
   };
 
   return (
