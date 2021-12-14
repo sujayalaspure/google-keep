@@ -34,7 +34,7 @@ const CreateNote = ({ createNote, inputProp }) => {
     title: "",
     description: "",
     color: "#fff",
-    tags: [],
+    tags: ["test"],
   });
 
   const actionIcons = [
