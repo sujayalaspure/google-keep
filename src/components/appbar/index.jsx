@@ -15,12 +15,12 @@ import {
   Brightness4Outlined as ToggleDarkModeIcon,
   Brightness5Outlined as ToggleLightModeIcon,
   Menu as MenuIcon,
-  ViewAgendaOutlined as ListIcon,
   SettingsOutlined as SettingsOutlinedIcon,
   RefreshOutlined as RefreshOutlinedIcon,
   Search as SearchIcon,
 } from "@material-ui/icons";
 import { useStateValue } from "../../context/StateProvider";
+
 const CustomAppBar = ({ currentUser }) => {
   const classes = useStyles();
   const { searchNotes, loading, getNotes } = useStateValue();
@@ -35,12 +35,7 @@ const CustomAppBar = ({ currentUser }) => {
       border: "1px solid #dadde9",
     },
   }))(Tooltip);
-  const icons = [
-    // <RefreshOutlinedIcon />,
-
-    <SettingsOutlinedIcon />,
-    // <CircularProgress size={24} />,
-  ];
+  const icons = [<SettingsOutlinedIcon />];
   return (
     <AppBar position="static" className={classes.AppBar}>
       <Toolbar className={classes.toolBar}>
@@ -51,6 +46,7 @@ const CustomAppBar = ({ currentUser }) => {
         >
           <MenuIcon />
         </IconButton>
+
         <Typography color="textPrimary" variant="h6" className={classes.title}>
           Keep
         </Typography>
@@ -103,16 +99,13 @@ const CustomAppBar = ({ currentUser }) => {
             </IconButton>
           )}
 
-          {icons.map((icon, index) => (
-            <IconButton
-              key={index}
-              edge="start"
-              className={classes.menuButton}
-              aria-label="menu"
-            >
-              {icon}
-            </IconButton>
-          ))}
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            aria-label="menu"
+          >
+            <SettingsOutlinedIcon />
+          </IconButton>
           <HtmlTooltip
             title={
               <React.Fragment>

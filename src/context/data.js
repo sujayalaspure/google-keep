@@ -3,7 +3,6 @@ import {
   BookmarkBorderOutlined,
   SaveAltOutlined,
   DeleteOutlineOutlined,
-  LabelOutlined,
 } from "@material-ui/icons";
 export const sideBarInitials = [
   { id: "1", isActive: true, Icon: EmojiObjectsOutlined, text: "Notes" },

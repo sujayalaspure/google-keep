@@ -8,7 +8,8 @@ import {
   setDoc,
   onSnapshot,
   updateDoc,
-  serverTimestamp,
+  query,
+  where,
 } from "firebase/firestore";
 
 import { toDate } from "../helperFunctions";
@@ -29,7 +30,6 @@ const StateProvider = ({ children }) => {
   const [notes, setNotes] = useState([]);
   const [filteredNotes, setfilteredNotes] = useState([]);
   const [path, setPath] = useState("notes/notes/dummy");
-  const [tagList, setTagList] = useState([]);
   const [sidebarItems, setsidebarItems] = useState(sideBarInitials);
   const [selectedSidebarItem, setSelectedSidebarItem] = useState({});
   const [alert, setAlert] = useState({
@@ -64,15 +64,33 @@ const StateProvider = ({ children }) => {
         text: tag,
         isActive: false,
         Icon: LabelOutlinedIcon,
+        isTag: true,
       }));
       setsidebarItems([...sidebarItems, ...tagList]);
       setNotes(notesData);
       setfilteredNotes(notesData);
       setLoading(false);
     });
+    queryFirestore();
 
     return () => unsub();
   }, [currentUser, path]);
+
+  const queryFirestore = async () => {
+    console.log("hello");
+    const notesRef = collection(db, path);
+    const q = query(notesRef, where("tags", "array-contains", "hey"));
+    console.log("LOG> [context/StateProvider.js:82] q --->", q);
+    const querySnapshot = await getDocs(q);
+    let notesData = [];
+    querySnapshot.forEach((doc) => {
+      notesData.push({
+        ...doc.data(),
+        id: doc.id,
+        createdAt: toDate(doc.data().createdAt),
+      });
+    });
+  };
 
   const handleSignIn = async () => {
     try {
@@ -153,7 +171,6 @@ const StateProvider = ({ children }) => {
   };
 
   const deleteNotebyId = async (id) => {
-    console.log("[context/StateProvider.js:59] ---> id", id);
     if (id) {
       await deleteDoc(doc(db, path, id));
     }
@@ -161,6 +178,14 @@ const StateProvider = ({ children }) => {
 
   const selectSidebarItem = (item) => {
     setSelectedSidebarItem(item);
+    if (item.isTag) {
+      const filteredNotes = notes.filter((note) =>
+        note.tags.includes(item.text)
+      );
+      setfilteredNotes(filteredNotes);
+    } else {
+      setfilteredNotes(notes);
+    }
   };
 
   const showAlert = ({ open, message, type = "success" }) => {
@@ -193,10 +218,10 @@ const StateProvider = ({ children }) => {
     editNote,
     setEditNote,
     updateDocbyId,
-    tagList,
     sidebarItems,
     selectedSidebarItem,
     selectSidebarItem,
+    queryFirestore,
   };
 
   return (
