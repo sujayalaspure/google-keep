@@ -25,7 +25,7 @@ const App = () => {
 
       <CustomAlert />
 
-      {true ? (
+      {currentUser ? (
         <>
           <CustomAppBar {...{ currentUser }} />
 
