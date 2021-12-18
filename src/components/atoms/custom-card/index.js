@@ -11,6 +11,7 @@ import React from "react";
 import { useStateValue } from "../../../context/StateProvider";
 import { useStyles } from "./style";
 import BorderColorOutlinedIcon from "@material-ui/icons/BorderColorOutlined";
+import ImageList from "../../image-list";
 const CustomCard = ({ title, description, createdAt, id, color, tags }) => {
   const classes = useStyles();
 
@@ -39,6 +40,8 @@ const CustomCard = ({ title, description, createdAt, id, color, tags }) => {
             <div className={classes.tag}>{tag}</div>
           ))}
         </div>
+
+        {/* <ImageList /> */}
       </CardContent>
       <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
         <IconButton
