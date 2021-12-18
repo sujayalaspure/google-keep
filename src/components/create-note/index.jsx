@@ -10,16 +10,9 @@ import React, { useEffect, useState } from "react";
 import { useStyles } from "./style";
 import { Timestamp } from "../../firebase/firebase";
 
-import {
-  AddAlertOutlined,
-  PersonAddOutlined,
-  ImageOutlined,
-  ArchiveOutlined,
-  ColorLensOutlined,
-  MoreVertOutlined,
-} from "@material-ui/icons";
 import { useStateValue } from "../../context/StateProvider";
 import TagsInput from "../atoms/taginput";
+import BottomActions from "./bottomActions";
 
 const CreateNote = ({ createNote, inputProp }) => {
   const { alert, showAlert } = useStateValue();
@@ -36,19 +29,6 @@ const CreateNote = ({ createNote, inputProp }) => {
     color: "#fff",
     tags: ["test"],
   });
-
-  const actionIcons = [
-    { name: "addAlert", Icon: AddAlertOutlined, onClick: null },
-    { name: "Person", Icon: PersonAddOutlined, onClick: null },
-    { name: "imagePicker", Icon: ImageOutlined, onClick: null },
-    { name: "archive", Icon: ArchiveOutlined, onClick: null },
-    {
-      name: "colorPicker",
-      Icon: ColorLensOutlined,
-      onClick: () => setOpenColor(!openColor),
-    },
-    { name: "more", Icon: MoreVertOutlined, onClick: null },
-  ];
 
   useEffect(() => {
     if (inputProp) {
@@ -105,6 +85,23 @@ const CreateNote = ({ createNote, inputProp }) => {
     setInput((prevValue) => ({ ...prevValue, tags }));
   };
 
+  const onBottomActionClick = (action) => {
+    switch (action.type) {
+      case "COLOR":
+        setOpenColor(!openColor);
+        break;
+      case "FILE":
+        console.log("file", action.selectedFile);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const fileSelect = (e) => {
+    console.log("LOG> [create-note/index.jsx:102] e --->", e);
+  };
   return (
     <div className={classes.container}>
       <Paper
@@ -153,17 +150,10 @@ const CreateNote = ({ createNote, inputProp }) => {
           <TagsInput selectedTags={selectedTags} {...{ tags, setTags }} />
           <div className={classes.bottomBtns}>
             <div>
-              {actionIcons.map(({ Icon, onClick }, index) => (
-                <IconButton
-                  key={index}
-                  size="small"
-                  aria-label="menu"
-                  onClick={onClick}
-                  className={classes.icon}
-                >
-                  <Icon fontSize="small" />
-                </IconButton>
-              ))}
+              <BottomActions
+                onClick={onBottomActionClick}
+                fileSelect={fileSelect}
+              />
             </div>
 
             <Button onClick={handleSubmit} size="small">

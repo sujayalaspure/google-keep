@@ -32,11 +32,13 @@ const StateProvider = ({ children }) => {
   const [path, setPath] = useState("notes/notes/dummy");
   const [sidebarItems, setsidebarItems] = useState(sideBarInitials);
   const [selectedSidebarItem, setSelectedSidebarItem] = useState({});
+  const [isMobile, setIsMobile] = useState(null);
   const [alert, setAlert] = useState({
     open: false,
     message: "",
     type: "success",
   });
+  const [openSidebar, setOpenSidebar] = useState(true);
 
   const [editNote, setEditNote] = useState({
     open: false,
@@ -202,6 +204,22 @@ const StateProvider = ({ children }) => {
       });
     }, 2000);
   };
+
+  function handleWindowSizeChange() {
+    setIsMobile(window.innerWidth <= 768);
+    if (window.innerWidth <= 768) {
+      setOpenSidebar(false);
+    } else {
+      setOpenSidebar(true);
+    }
+  }
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, []);
+
   const value = {
     currentUser,
     notes,
@@ -222,6 +240,9 @@ const StateProvider = ({ children }) => {
     selectedSidebarItem,
     selectSidebarItem,
     queryFirestore,
+    openSidebar,
+    setOpenSidebar,
+    isMobile,
   };
 
   return (

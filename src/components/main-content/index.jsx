@@ -20,7 +20,7 @@ const MainContent = () => {
   };
 
   return (
-    <Container className={classes.container}>
+    <Container maxWidth="lg" className={classes.container}>
       <CreateNote {...{ createNote }} />
       <br />
       <Divider />
