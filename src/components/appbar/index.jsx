@@ -23,7 +23,8 @@ import { useStateValue } from "../../context/StateProvider";
 
 const CustomAppBar = ({ currentUser }) => {
   const classes = useStyles();
-  const { searchNotes, loading, getNotes } = useStateValue();
+  const { searchNotes, loading, getNotes, isMobile, setOpenSidebar } =
+    useStateValue();
 
   const [isDarkMode, setisDarkMode] = useState(false);
   const HtmlTooltip = withStyles((theme) => ({
@@ -35,11 +36,16 @@ const CustomAppBar = ({ currentUser }) => {
       border: "1px solid #dadde9",
     },
   }))(Tooltip);
-  const icons = [<SettingsOutlinedIcon />];
+
+  const handleDrawerOpen = () => {
+    setOpenSidebar((prev) => !prev);
+  };
+
   return (
-    <AppBar position="static" className={classes.AppBar}>
+    <AppBar position="sticky" className={classes.AppBar}>
       <Toolbar className={classes.toolBar}>
         <IconButton
+          onClick={handleDrawerOpen}
           edge="start"
           className={classes.menuButton}
           aria-label="menu"
@@ -63,23 +69,6 @@ const CustomAppBar = ({ currentUser }) => {
         </div>
 
         <div className={classes.rightIcon}>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            aria-label="menu"
-            onClick={() => setisDarkMode(!isDarkMode)}
-          >
-            {isDarkMode ? (
-              <Tooltip title="Toggle Light Mode">
-                <ToggleDarkModeIcon />
-              </Tooltip>
-            ) : (
-              <Tooltip title="Toggle Dark Mode">
-                <ToggleLightModeIcon />
-              </Tooltip>
-            )}
-          </IconButton>
-
           {loading ? (
             <IconButton
               edge="start"
@@ -98,14 +87,34 @@ const CustomAppBar = ({ currentUser }) => {
               <RefreshOutlinedIcon />
             </IconButton>
           )}
-
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            aria-label="menu"
-          >
-            <SettingsOutlinedIcon />
-          </IconButton>
+          {!isMobile && (
+            <>
+              {" "}
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                aria-label="menu"
+                onClick={() => setisDarkMode(!isDarkMode)}
+              >
+                {isDarkMode ? (
+                  <Tooltip title="Toggle Light Mode">
+                    <ToggleDarkModeIcon />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Toggle Dark Mode">
+                    <ToggleLightModeIcon />
+                  </Tooltip>
+                )}
+              </IconButton>
+              <IconButton
+                edge="start "
+                className={classes.menuButton}
+                aria-label="menu"
+              >
+                <SettingsOutlinedIcon />
+              </IconButton>
+            </>
+          )}
           <HtmlTooltip
             title={
               <React.Fragment>

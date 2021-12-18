@@ -9,6 +9,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   AppBar: {
     backgroundColor: "#fff",
+    zIndex: theme.zIndex.drawer + 1,
   },
   toolBar: {
     display: "grid",

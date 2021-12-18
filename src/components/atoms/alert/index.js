@@ -8,10 +8,10 @@ const CustomAlert = () => {
     <Slide
       style={{
         position: "absolute",
-        left: "20px",
+        right: "20px",
         bottom: "20px",
       }}
-      direction="right"
+      direction="left"
       in={alert.open}
       mountOnEnter
       unmountOnExit

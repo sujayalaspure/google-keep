@@ -7,7 +7,7 @@ export const useStyles = makeStyles((theme) => ({
 
   container: {
     display: "grid",
-    gridTemplateColumns: "300px auto",
+    gridTemplateColumns: "max-content auto",
     height: "100vh",
     padding: theme.spacing(5, 0),
   },
