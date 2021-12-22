@@ -9,6 +9,10 @@ const PopOverNote = ({ editNote, setEditNote }) => {
   const { updateDocbyId } = useStateValue();
 
   const updateNote = async (note) => {
+    setEditNote({
+      open: false,
+      data: {},
+    });
     await updateDocbyId(note);
   };
 

@@ -52,6 +52,7 @@ const StateProvider = ({ children }) => {
       const notesData = [];
       querySnapshot.forEach((doc) => {
         notesData.push({
+          tags: [],
           ...doc.data(),
           id: doc.id,
           createdAt: toDate(doc.data().createdAt),
@@ -61,6 +62,8 @@ const StateProvider = ({ children }) => {
       const tags = [
         ...new Set(notesData.reduce((rls, crt) => [...rls, ...crt.tags], [])),
       ];
+
+      console.log(tags);
       const tagList = tags.map((tag) => ({
         id: Math.random().toString(16).slice(2),
         text: tag,
@@ -73,7 +76,7 @@ const StateProvider = ({ children }) => {
       setfilteredNotes(notesData);
       setLoading(false);
     });
-    queryFirestore();
+    // queryFirestore();
 
     return () => unsub();
   }, [currentUser, path]);
@@ -150,16 +153,16 @@ const StateProvider = ({ children }) => {
   const updateDocbyId = async (data) => {
     if (data) {
       try {
+        setEditNote({
+          open: false,
+          data: {},
+        });
         await updateDoc(doc(db, path, data.id), data);
         console.log("update success");
         showAlert({
           open: true,
           message: "Update Success",
           type: "success",
-        });
-        setEditNote({
-          open: false,
-          data: {},
         });
       } catch (error) {
         console.log("[context/StateProvider.js:119] ---> error", error);
