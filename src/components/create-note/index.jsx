@@ -2,7 +2,6 @@ import {
   Button,
   Collapse,
   Fade,
-  IconButton,
   InputBase,
   Paper,
 } from "@material-ui/core";
@@ -142,10 +141,16 @@ const CreateNote = ({ createNote, inputProp }) => {
             value={input.description}
             multiline
             minRows={3}
+            maxRows={6}
             className={classes.input}
             placeholder="Take a Note..."
             onChange={handleChange}
             name="description"
+            style={{
+              width: "100%",
+              margin: "0",
+              padding: "0 8px",
+            }}
           />
           <TagsInput selectedTags={selectedTags} {...{ tags, setTags }} />
           <div className={classes.bottomBtns}>

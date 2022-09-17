@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useStyles } from "./style";
-import SidebarItem from "../atoms/sidebar-item";
 import clsx from "clsx";
 
 import { useStateValue } from "../../context/StateProvider";

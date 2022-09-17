@@ -50,20 +50,24 @@ const StateProvider = ({ children }) => {
     const notesRef = collection(db, path);
     const unsub = onSnapshot(notesRef, (querySnapshot) => {
       const notesData = [];
-      querySnapshot.forEach((doc) => {
-        notesData.push({
-          tags: [],
-          ...doc.data(),
-          id: doc.id,
-          createdAt: toDate(doc.data().createdAt),
-        });
-      });
+      if (currentUser){
 
-      const tags = [
+        querySnapshot.forEach((doc) => {
+          notesData.push({
+            tags: [],
+            ...doc.data(),
+            id: doc.id,
+            createdAt: toDate(doc.data().createdAt),
+          });
+        });
+      }
+      let tags=[]
+
+       tags = [
         ...new Set(notesData.reduce((rls, crt) => [...rls, ...crt.tags], [])),
       ];
 
-      console.log(tags);
+      console.log('tags',tags);
       const tagList = tags.map((tag) => ({
         id: Math.random().toString(16).slice(2),
         text: tag,

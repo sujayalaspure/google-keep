@@ -1,4 +1,4 @@
-import { CssBaseline, Fade } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import React, { useState } from "react";
 import CustomAppBar from "./components/appbar";
 import { useStyles } from "./style";
@@ -25,7 +25,7 @@ const App = () => {
 
       <CustomAlert />
 
-      {true ? (
+      {currentUser ? (
         <>
           <CustomAppBar {...{ currentUser }} />
 

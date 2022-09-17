@@ -35,7 +35,7 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: 8,
     border: (_) =>
       _.err
-        ? _.type == "success"
+        ? _.type === "success"
           ? "2px solid green"
           : "2px solid red"
         : "none",

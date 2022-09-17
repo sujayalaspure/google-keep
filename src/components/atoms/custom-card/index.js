@@ -3,7 +3,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Divider,
   IconButton,
   Typography,
 } from "@material-ui/core";
@@ -11,7 +10,6 @@ import React from "react";
 import { useStateValue } from "../../../context/StateProvider";
 import { useStyles } from "./style";
 import BorderColorOutlinedIcon from "@material-ui/icons/BorderColorOutlined";
-import ImageList from "../../image-list";
 const CustomCard = ({ title, description, createdAt, id, color, tags }) => {
   const classes = useStyles();
 

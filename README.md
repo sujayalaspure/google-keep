@@ -12,4 +12,6 @@
 - Create a note
 - Add color
 - delete note
--
+- Add tags/ label
+- Search notes
+- Filter notes by label

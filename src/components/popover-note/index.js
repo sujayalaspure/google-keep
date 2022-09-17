@@ -1,4 +1,3 @@
-import { Fade } from "@material-ui/core";
 import React from "react";
 import { useStateValue } from "../../context/StateProvider";
 import CreateNote from "../create-note";
